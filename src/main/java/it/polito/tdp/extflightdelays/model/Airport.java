@@ -118,10 +118,14 @@ public class Airport {
 			return false;
 		return true;
 	}
-
-	@Override
+	
 	public String toString() {
-		return "Airport [id=" + id + ", iataCode=" + iataCode + ", airportName=" + airportName + "]";
+		return this.airportName;
 	}
+
+//	@Override
+//	public String toString() {
+//		return "Airport [id=" + id + ", iataCode=" + iataCode + ", airportName=" + airportName + "]";
+//	}
 	
 }

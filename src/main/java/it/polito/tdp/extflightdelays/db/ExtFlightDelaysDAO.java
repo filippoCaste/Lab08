@@ -91,4 +91,8 @@ public class ExtFlightDelaysDAO {
 			throw new RuntimeException("Error Connection Database");
 		}
 	}
+//
+//	public double calculateAvgDistance(Airport from, Airport to) {
+//		String sql = "";
+//	}
 }

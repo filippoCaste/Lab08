@@ -35,7 +35,17 @@ public class FXMLController {
 
     @FXML
     void doAnalizzaAeroporti(ActionEvent event) {
-    	//TODO
+    	this.txtResult.clear();
+    	Double minDistance = null;
+    	try {
+    		minDistance = Double.parseDouble(this.distanzaMinima.getText());
+    	} catch(NumberFormatException e) {
+    		this.txtResult.setText("Devi inserire un valore numerico!");
+    		return;
+    	}
+    	this.model.creaGrafo(minDistance);
+    	
+    	txtResult.appendText(this.model.printGraph());
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -43,6 +53,7 @@ public class FXMLController {
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
         assert distanzaMinima != null : "fx:id=\"distanzaMinima\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnAnalizza != null : "fx:id=\"btnAnalizza\" was not injected: check your FXML file 'Scene.fxml'.";
+        this.txtResult.setDisable(false);
     }
     
     public void setModel(Model model) {

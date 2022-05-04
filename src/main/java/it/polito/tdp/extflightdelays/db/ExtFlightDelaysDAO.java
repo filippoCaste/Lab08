@@ -11,6 +11,7 @@ import java.util.List;
 import it.polito.tdp.extflightdelays.model.Airline;
 import it.polito.tdp.extflightdelays.model.Airport;
 import it.polito.tdp.extflightdelays.model.Flight;
+import it.polito.tdp.extflightdelays.model.Tratta;
 
 public class ExtFlightDelaysDAO {
 
@@ -95,4 +96,55 @@ public class ExtFlightDelaysDAO {
 //	public double calculateAvgDistance(Airport from, Airport to) {
 //		String sql = "";
 //	}
+	
+	public double calculateAvgDistance(Airport origin, Airport dest) {
+		String sql = "SELECT AVG(f.DISTANCE) AS med FROM flights f WHERE (f.ORIGIN_AIRPORT_ID=? AND f.DESTINATION_AIRPORT_ID=?) OR (f.ORIGIN_AIRPORT_ID=? AND f.DESTINATION_AIRPORT_ID=?)";
+		Double res = null;
+		
+		try {
+			
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			
+			st.setInt(1, origin.getId());
+			st.setInt(3, origin.getId());
+			st.setInt(2, dest.getId());
+			st.setInt(4, dest.getId());
+			
+			ResultSet rs = st.executeQuery();
+			
+			if(rs.next()) {
+				res = rs.getDouble("med");
+			}
+			conn.close();
+			return res;
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Errore DB distance");
+		}
+	}
+	
+	public List<Tratta> loadTratte() {
+		List<Tratta> res = new ArrayList<>();
+		String sql="SELECT DISTINCT AVG(DISTANCE) AS avgDistance, ORIGIN_AIRPORT_ID, DESTINATION_AIRPORT_ID "
+				+ "FROM flights f "
+				+ "GROUP BY ORIGIN_AIRPORT_ID, DESTINATION_AIRPORT_ID;";
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()) {
+				res.add(new Tratta(rs.getInt("ORIGIN_AIRPORT_ID"), rs.getInt("DESTINATION_AIRPORT_ID"), rs.getDouble("avgDistance")));
+			}
+			conn.close();
+			return res;
+			
+		} catch(SQLException s) {
+			s.printStackTrace();
+			throw new RuntimeException("Errore DB distance");
+		}
+	}
 }

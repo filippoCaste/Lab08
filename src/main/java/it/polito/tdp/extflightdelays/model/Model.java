@@ -33,13 +33,24 @@ public class Model {
 			airportsMap.put(a.getId(), a);
 		Graphs.addAllVertices(graph, airports);
 		
-		List<Flight> flights = dao.loadAllFlights();
+		//List<Flight> flights = dao.loadAllFlights();
+		
+		List<Tratta> tratte = dao.loadTratte();
+		
+//		for(Flight f : flights) {
+//			//logger.info("tratte");
+//			if(tratte!=null && !tratte.containsKey(""+f.getOriginAirportId()+f.getDestinationAirportId())) {
+//				tratte.put(""+f.getOriginAirportId()+f.getDestinationAirportId(), new Tratta(airportsMap.get(f.getOriginAirportId()), airportsMap.get(f.getDestinationAirportId())));
+//			}
+//			// airportsMap.get(f.getOriginAirportId()), airportsMap.get(f.getDestinationAirportId())
+//		}
+		
 		for(Airport a : airports) {
-			for(Flight f : flights) {
-				if(f.getOriginAirportId() == a.getId()) {
-					if(f.getDistance() > miles && !graph.containsEdge(a, airportsMap.get(f.getDestinationAirportId()))) {
-//						logger.info("Aggiunto aeroporto di distanza {}", f.getDistance());
-						this.graph.addEdge(a, airportsMap.get(f.getDestinationAirportId()) , new ArcoPesato(a, airportsMap.get(f.getDestinationAirportId()), f.getDistance()));
+			for(Tratta t : tratte) {
+				if(a.getId() == t.getFromId()) {
+					if(t.getMiles() > miles && !graph.containsEdge(a, airportsMap.get(t.getToId()))) {
+						logger.info("Aggiunto aeroporto di distanza {}", t.getMiles());
+						this.graph.addEdge(a, airportsMap.get(t.getToId()) , new ArcoPesato(a, airportsMap.get(t.getToId()) , t.getMiles()));
 						//this.graph.setEdgeWeight(a, airportsMap.get(f.getDestinationAirportId()), f.getDistance());
 					}
 				}

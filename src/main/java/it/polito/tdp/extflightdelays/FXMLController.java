@@ -43,9 +43,10 @@ public class FXMLController {
     		this.txtResult.setText("Devi inserire un valore numerico!");
     		return;
     	}
+    	long start = System.currentTimeMillis();
     	this.model.creaGrafo(minDistance);
     	
-    	txtResult.appendText(this.model.printGraph());
+    	txtResult.appendText(this.model.printGraph() + "\n\n\n" +(System.currentTimeMillis()-start)+" ms");
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

@@ -45,16 +45,17 @@ public class Model {
 //			// airportsMap.get(f.getOriginAirportId()), airportsMap.get(f.getDestinationAirportId())
 //		}
 		
-		for(Airport a : airports) {
+//		for(Airport a : airports) {
 			for(Tratta t : tratte) {
+				Airport a = airportsMap.get(t.getFromId());
 				if(a.getId() == t.getFromId()) {
-					if(t.getMiles() > miles && !graph.containsEdge(a, airportsMap.get(t.getToId()))) {
+//					if(t.getMiles() > miles && !graph.containsEdge(a, airportsMap.get(t.getToId()))) {
 						logger.info("Aggiunto aeroporto di distanza {}", t.getMiles());
 						this.graph.addEdge(a, airportsMap.get(t.getToId()) , new ArcoPesato(a, airportsMap.get(t.getToId()) , t.getMiles()));
 						//this.graph.setEdgeWeight(a, airportsMap.get(f.getDestinationAirportId()), f.getDistance());
-					}
+//					}
 				}
-			}
+//			}
 		}
 		
 	}
